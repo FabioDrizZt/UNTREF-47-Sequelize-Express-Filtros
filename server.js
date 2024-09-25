@@ -1,5 +1,7 @@
 const { Product } = require('./src/modelos/product')
 const { Employee } = require('./src/modelos/employee')
+const { ProductCategoryView } = require('./src/modelos/productsandcategories')
+
 const { sequelize } = require('./src/conexion/connection')
 const { Op } = require('sequelize')
 const express = require('express')
@@ -21,6 +23,17 @@ app.use(async (req,res,next) => {
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
+})
+
+app.get('/productosycategorias', async (req, res) => {
+  try {
+    const products = await Product.findAll(
+    )
+    products.length > 0 ? res.status(200).json(products)
+    : res.status(404).json({error: "No encontramos productos cargados"})
+  } catch (error) {
+    res.status(500).json({error: `Error en el servidor: `,description: error.message})
+  } 
 })
 
 app.get('/productos', async (req, res) => {
